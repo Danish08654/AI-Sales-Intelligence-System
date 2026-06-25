@@ -1,8 +1,3 @@
-"""
-AI Sales Intelligence System - Streamlit Cloud Edition
-Main entry point for deployment on Streamlit Cloud
-"""
-
 import streamlit as st
 import pandas as pd
 import json
@@ -80,7 +75,7 @@ if 'current_analysis' not in st.session_state:
 # ═══════════════════════════════════════════════════════════════
 
 # Create tabs for different sections
-tab1, tab2, tab3 = st.tabs(["🚀 Lead Analyzer", "📊 History", "ℹ️ About"])
+tab1, tab2, tab3 = st.tabs(["🚀 Lead Analyzer", "📊 History",])
 
 with tab1:
     # ═══════════════════════════════════════════════════════════════
@@ -337,61 +332,6 @@ with tab2:
             st.rerun()
     else:
         st.info("No analysis history yet. Start by analyzing a lead!")
-
-# ═══════════════════════════════════════════════════════════════
-# ABOUT TAB
-# ═══════════════════════════════════════════════════════════════
-
-with tab3:
-    st.subheader("ℹ️ About This Application")
-    
-    st.markdown("""
-    ### 🤖 AI Sales Intelligence System
-    
-    An intelligent platform for analyzing sales leads, generating insights, and creating personalized outreach emails.
-    
-    #### Features:
-    - **Lead Analysis**: AI-powered analysis based on company size and industry
-    - **Scoring System**: Automated lead scoring (0-100)
-    - **Email Generation**: Personalized cold email templates
-    - **History Tracking**: Keep track of all analyses
-    - **Data Export**: Download results in JSON format
-    
-    #### How It Works:
-    1. **Input**: Enter company information
-    2. **Analyze**: AI processes the data
-    3. **Score**: Get a lead score and tier
-    4. **Outreach**: Use the generated email for cold outreach
-    
-    #### Scoring Tiers:
-    - 🔥 **Hot** (80-100): Enterprise opportunities with high conversion potential
-    - 🟡 **Warm** (60-79): Growing companies with good potential
-    - ❄️ **Cold** (0-59): Prospects requiring more research
-    
-    #### Industries Supported:
-    - Finance
-    - Healthcare
-    - Supply Chain
-    - Retail
-    - Technology
-    
-    #### API Endpoints:
-    This application runs on **Streamlit Cloud** with all processing happening server-side.
-    
-    #### Version Info:
-    - **Version**: 1.0.0
-    - **Platform**: Streamlit Cloud
-    - **Language**: Python 3.9+
-    - **Last Updated**: 2024
-    
-    #### Privacy & Data:
-    - No data is stored permanently
-    - Each session is independent
-    - Analysis results are available for download only
-    
-    #### Support:
-    For issues or feature requests, please refer to the GitHub repository.
-    """)
     
     st.divider()
     
@@ -404,50 +344,6 @@ with tab3:
     with col_info2:
         st.success("⚡ **Fast Processing** - Results in seconds")
 
-# ═══════════════════════════════════════════════════════════════
-# SIDEBAR
-# ═══════════════════════════════════════════════════════════════
-
-with st.sidebar:
-    st.title("📌 Quick Guide")
-    
-    st.markdown("""
-    ### Getting Started:
-    1. **Enter Company Details**
-       - Company name
-       - Industry sector
-       - Employee count
-    
-    2. **Click Analyze**
-       - AI processes your input
-       - Generates insights
-       - Creates lead score
-       - Generates email
-    
-    3. **Review Results**
-       - Check AI insights
-       - Review lead score and tier
-       - Copy or download email
-    
-    4. **Take Action**
-       - Send personalized email
-       - Track results
-       - Iterate and improve
-    
-    ### Pro Tips:
-    ✅ Be specific with company names
-    ✅ Select accurate industry
-    ✅ Use realistic employee counts
-    ✅ Download results for your records
-    ✅ Track performance metrics
-    
-    ### Key Metrics:
-    - **Lead Score**: 0-100 scale
-    - **Tier**: Hot/Warm/Cold classification
-    - **Insights**: AI-generated observations
-    - **Email**: Ready-to-send template
-    """)
-    
     st.divider()
     
     # Stats
