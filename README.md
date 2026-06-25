@@ -13,7 +13,7 @@ Email Generation: Personalized cold email templates
 
 History Tracking: Keep track of all analyses
 
-Data Export: Download results in JSON format
+Data Export: Download results in JSON, CVS, PDF, WORD, format
 
 ---
 
