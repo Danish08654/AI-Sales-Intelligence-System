@@ -118,14 +118,9 @@ AI Sales Team
 # HERO
 # ==================================================
 
-st.title("🚀 AI Sales Intelligence System")
+st.title("AI Sales Intelligence System")
 
-st.markdown(
-"""
-Analyze leads, score opportunities, generate AI insights,
-and create personalized outreach emails.
-"""
-)
+
 
 # ==================================================
 # INPUT SECTION
@@ -294,6 +289,8 @@ if st.session_state.history:
         [
             "CSV",
             "JSON"
+            "pdf"
+            "word"
         ]
     )
 
