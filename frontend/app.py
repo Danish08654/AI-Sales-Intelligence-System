@@ -87,15 +87,7 @@ AI Sales Team
 # HERO
 # ==================================
 
-st.title("🚀 AI Sales Intelligence Platform")
-
-st.markdown(
-"""
-Analyze leads, generate insights,
-score opportunities, and create
-personalized outreach emails.
-"""
-)
+st.title(" AI Sales Intelligence System")
 
 # ==================================
 # INPUTS
