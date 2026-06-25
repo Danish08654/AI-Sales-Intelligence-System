@@ -1,39 +1,43 @@
+# frontend/app.py
+
 import streamlit as st
 import pandas as pd
 import json
-from datetime import datetime
 
-# ==================================
+# ==================================================
 # PAGE CONFIG
-# ==================================
+# ==================================================
 
 st.set_page_config(
-    page_title="AI Sales Intelligence",
+    page_title="AI Sales Intelligence System",
     page_icon="🚀",
     layout="wide"
 )
 
-# ==================================
+# ==================================================
 # SESSION STATE
-# ==================================
+# ==================================================
 
 if "history" not in st.session_state:
     st.session_state.history = []
 
-# ==================================
-# SIMPLE AI LOGIC
-# ==================================
+# ==================================================
+# SCORING ENGINE
+# ==================================================
 
 def calculate_score(industry, employees):
 
     score = 40
 
-    if industry == "Technology":
-        score += 25
-    elif industry == "Finance":
-        score += 20
-    elif industry == "Healthcare":
-        score += 15
+    industry_weight = {
+        "Technology": 25,
+        "Finance": 20,
+        "Healthcare": 15,
+        "Retail": 10,
+        "Supply Chain": 12
+    }
+
+    score += industry_weight.get(industry, 0)
 
     if employees > 1000:
         score += 25
@@ -44,25 +48,49 @@ def calculate_score(industry, employees):
 
     return min(score, 100)
 
+# ==================================================
+# INSIGHTS
+# ==================================================
 
 def generate_insights(industry, employees):
 
     insights = []
 
     if employees > 1000:
-        insights.append("Enterprise company with large budget potential.")
+        insights.append(
+            "Large enterprise with significant purchasing power."
+        )
+
+    elif employees > 200:
+        insights.append(
+            "Mid-market company with strong growth potential."
+        )
+
+    else:
+        insights.append(
+            "SMB company suitable for fast sales cycles."
+        )
 
     if industry == "Technology":
-        insights.append("Technology companies adopt AI solutions faster.")
+        insights.append(
+            "Technology firms rapidly adopt AI solutions."
+        )
 
-    if industry == "Finance":
-        insights.append("Compliance and security messaging is important.")
+    elif industry == "Finance":
+        insights.append(
+            "Security and compliance messaging is critical."
+        )
 
-    if industry == "Healthcare":
-        insights.append("Healthcare buyers value automation and efficiency.")
+    elif industry == "Healthcare":
+        insights.append(
+            "Healthcare companies value automation and efficiency."
+        )
 
     return insights
 
+# ==================================================
+# EMAIL GENERATOR
+# ==================================================
 
 def generate_email(company, industry):
 
@@ -73,33 +101,45 @@ Hi Team,
 
 I noticed {company} operates in the {industry} industry.
 
-Our AI solutions help organizations improve lead generation,
-sales productivity, and marketing performance.
+Our AI platform helps companies improve:
 
-Would you be open to a short conversation this week?
+• Lead Generation
+• Sales Productivity
+• Revenue Growth
+• Marketing Performance
 
-Best Regards
+Would you be open to a brief discussion next week?
+
+Best Regards,
 AI Sales Team
 """
 
-
-# ==================================
+# ==================================================
 # HERO
-# ==================================
+# ==================================================
 
-st.title(" AI Sales Intelligence System")
+st.title("🚀 AI Sales Intelligence System")
 
-# ==================================
-# INPUTS
-# ==================================
+st.markdown(
+"""
+Analyze leads, score opportunities, generate AI insights,
+and create personalized outreach emails.
+"""
+)
 
-col1, col2 = st.columns([1, 2])
+# ==================================================
+# INPUT SECTION
+# ==================================================
+
+col1, col2 = st.columns([1,2])
 
 with col1:
 
     st.subheader("Lead Information")
 
-    company = st.text_input("Company")
+    company = st.text_input(
+        "Company Name"
+    )
 
     industry = st.selectbox(
         "Industry",
@@ -118,14 +158,23 @@ with col1:
         value=100
     )
 
-    analyze = st.button(
-        "🚀 Analyze Lead",
-        use_container_width=True
-    )
+    c1, c2 = st.columns(2)
 
-# ==================================
+    with c1:
+        analyze = st.button(
+            "🚀 Analyze",
+            use_container_width=True
+        )
+
+    with c2:
+        clear_form = st.button(
+            "🔄 Clear Form",
+            use_container_width=True
+        )
+
+# ==================================================
 # RESULTS
-# ==================================
+# ==================================================
 
 with col2:
 
@@ -133,7 +182,9 @@ with col2:
 
         if not company:
 
-            st.error("Enter company name")
+            st.error(
+                "Please enter company name."
+            )
 
         else:
 
@@ -152,58 +203,82 @@ with col2:
                 industry
             )
 
+            if score >= 80:
+                tier = "🔥 Hot Lead"
+
+            elif score >= 60:
+                tier = "🟡 Warm Lead"
+
+            else:
+                tier = "❄️ Cold Lead"
+
             result = {
-                "company": company,
-                "industry": industry,
-                "employees": employees,
-                "score": score,
-                "insights": insights,
-                "email": email
+                "Company": company,
+                "Industry": industry,
+                "Employees": employees,
+                "Score": score,
+                "Tier": tier
             }
 
-            st.session_state.history.append(result)
+            st.session_state.history.append(
+                result
+            )
 
-            c1, c2 = st.columns(2)
+            st.success(
+                "Analysis Completed"
+            )
 
-            c1.metric(
+            m1, m2 = st.columns(2)
+
+            m1.metric(
                 "Lead Score",
                 f"{score}/100"
             )
 
-            tier = (
-                "Hot"
-                if score >= 80
-                else "Warm"
-                if score >= 60
-                else "Cold"
+            m2.metric(
+                "Lead Tier",
+                tier
             )
 
-            c2.metric("Lead Tier", tier)
+            st.progress(
+                score / 100
+            )
 
-            st.subheader("AI Insights")
+            st.divider()
+
+            st.subheader(
+                "🧠 AI Insights"
+            )
 
             for item in insights:
                 st.success(item)
 
-            st.subheader("Cold Email")
+            st.divider()
+
+            st.subheader(
+                "📧 Personalized Email"
+            )
 
             st.code(email)
 
             st.download_button(
-                "Download Email",
-                email,
-                f"{company}_email.txt"
+                "📥 Download Email",
+                data=email,
+                file_name=f"{company}_email.txt",
+                mime="text/plain"
             )
 
-# ==================================
+# ==================================================
 # HISTORY
-# ==================================
+# ==================================================
 
 if st.session_state.history:
 
     st.divider()
 
-    st.subheader("Analysis History")
+    st.subheader(
+        "📊 Analysis History"
+    )
 
     history_df = pd.DataFrame(
         st.session_state.history
@@ -214,11 +289,43 @@ if st.session_state.history:
         use_container_width=True
     )
 
-    st.download_button(
-        "Export History",
-        json.dumps(
-            st.session_state.history,
-            indent=2
-        ),
-        "history.json"
+    export_type = st.selectbox(
+        "Export Format",
+        [
+            "CSV",
+            "JSON"
+        ]
     )
+
+    if export_type == "CSV":
+
+        csv = history_df.to_csv(
+            index=False
+        )
+
+        st.download_button(
+            "📥 Download CSV",
+            csv,
+            "analysis_history.csv",
+            "text/csv"
+        )
+
+    else:
+
+        st.download_button(
+            "📥 Download JSON",
+            json.dumps(
+                st.session_state.history,
+                indent=2
+            ),
+            "analysis_history.json",
+            "application/json"
+        )
+
+    if st.button(
+        "🗑️ Clear History"
+    ):
+
+        st.session_state.history = []
+
+        st.rerun()
