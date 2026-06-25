@@ -51,6 +51,7 @@ Retail
 
 Technology
 
+FinTech
 ----
 
 # Support:
