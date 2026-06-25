@@ -10,20 +10,6 @@ from datetime import datetime
 import sys
 import os
 
-# Add utils to path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-# Import your existing services
-try:
-    from utils.services.sales_service import process_lead
-except ImportError:
-    st.error("⚠️ Error: Could not import sales_service. Ensure utils folder structure is correct.")
-    st.stop()
-
-# ═══════════════════════════════════════════════════════════════
-# PAGE CONFIG
-# ═══════════════════════════════════════════════════════════════
-
 st.set_page_config(
     page_title="AI Sales Intelligence",
     page_icon="🤖",
